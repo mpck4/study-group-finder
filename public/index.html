@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Group Finder</title>
+    <style>
+        .post-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .reply-box {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Study Group Finder!</h1>
+    <p>find and create study groups</p>
+
+    <h2>Create a Post</h2>
+    <form id="postForm">
+        <textarea id="postContent" placeholder="Write your post here..."></textarea>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Posts</h2>
+    <div id="posts"></div>
+
+    <script>
+        document.getElementById('postForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const content = document.getElementById('postContent').value;
+            fetch('/api/posts', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ content }),
+            })
+            .then(response => response.json())
+            .then(post => {
+                document.getElementById('postContent').value = '';
+                loadPosts();
+            });
+        });
+
+        function loadPosts() {
+            fetch('/api/posts')
+                .then(response => response.json())
+                .then(posts => {
+                    const postsDiv = document.getElementById('posts');
+                    postsDiv.innerHTML = '';
+                    posts.forEach(post => {
+                        const postDiv = document.createElement('div');
+                        postDiv.className = 'post-box';
+                        postDiv.innerHTML = `
+                            <p>${post.content}</p>
+                            <div class="reply-box">
+                                <textarea placeholder="Write your reply..."></textarea>
+                                <button onclick="submitReply(${post.id}, this)">Reply</button>
+                            </div>
+                            <div class="replies">
+                                ${post.replies.map(reply => `<p>${reply.content}</p>`).join('')}
+                            </div>
+                        `;
+                        postsDiv.appendChild(postDiv);
+                    });
+                });
+        }
+
+        function submitReply(postId, button) {
+            const replyBox = button.previousElementSibling;
+            const content = replyBox.value;
+            fetch(`/api/posts/${postId}/replies`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ content }),
+            })
+            .then(response => response.json())
+            .then(reply => {
+                loadPosts();
+            });
+        }
+
+        loadPosts();
+    </script>
+</body>
+</html>
