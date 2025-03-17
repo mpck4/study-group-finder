@@ -1,8 +1,11 @@
+require('dns').setDefaultResultOrder('ipv4first');
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const { Pool } = require('pg');
 require('dotenv').config(); // Load environment variables from .env file
+
+console.log('Database URL:', process.env.DATABASE_URL); // Verify the DATABASE_URL
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -11,7 +14,8 @@ const port = process.env.PORT || 3000;
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: {
-        rejectUnauthorized: false
+        require: true,
+        rejectUnauthorized: false, // Keep false for Supabase
     }
 });
 
