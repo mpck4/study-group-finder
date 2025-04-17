@@ -15,7 +15,10 @@ body {
 
 .sidebar {
     width: 200px;
-    background-color: #cfd8dc;
+    background-image: url('images/aurora\ wallpaper1.png'); /* Relative path to the image */
+    background-size: cover; /* Ensures the image covers the entire background */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    background-position: center; /* Centers the image */
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -86,7 +89,7 @@ body {
 }
 
 .post {
-    background-color: #ffffff;
+    background-color: #ffffff2a;
     padding: 20px;
     margin-bottom: 20px;
     border-radius: 5px;
@@ -115,16 +118,22 @@ textarea {
 }
 
 button {
+    width: auto; /* Adjusts to the content size */
     padding: 10px 20px;
-    background-color: #2196f3;
-    color: white;
-    border: none;
-    border-radius: 5px;
+    background-image: url('images/smallButton.png'); /* Path to the smallButton image */
+    background-size: cover; /* Ensures the image covers the entire button */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    background-position: center; /* Centers the image */
+    color: white; /* Keeps the text visible */
+    border: none; /* Removes the default border */
+    border-radius: 5px; /* Optional: Keeps the button slightly rounded */
     cursor: pointer;
+    font-size: 16px; /* Adjusts the font size */
+    text-align: center;
 }
 
 button:hover {
-    background-color: #1976d2;
+    opacity: 0.9; /* Adds a slight hover effect */
 }
 
 #postTitle {
