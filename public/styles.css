@@ -1,8 +1,12 @@
+/* filepath: [styles.css](http://_vscodecontentref_/1) */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #e0f7fa;
+    background-image: url('images/background.png'); /* Relative path to the image */
+    background-size: cover; /* Ensures the image covers the entire background */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    background-position: center; /* Centers the image */
 }
 
 .container {
@@ -18,18 +22,33 @@ body {
     align-items: center;
 }
 
+/* Profile Icon */
 .profile-icon {
     width: 50px;
     height: 50px;
-    background-color: #90caf9;
-    border-radius: 50%;
+    border-radius: 50%; /* Makes the image circular */
     margin-bottom: 20px;
 }
 
+/* Math Icon */
+.icon.math {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 10px;
+}
+
+/* Science Icon */
+.icon.science {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 10px;
+}
+
+/* Other Icons (Settings, Messages, Notifications) */
 .icon {
     width: 40px;
     height: 40px;
-    background-color: #90caf9;
+    background-color: #90caf9; /* Default color for other icons */
     margin-bottom: 10px;
     border-radius: 5px;
 }
@@ -41,9 +60,10 @@ body {
 
 .search input {
     width: 100%;
-    padding: 5px;
-    border: none;
+    padding: 8px;
+    border: 1px solid #ccc;
     border-radius: 5px;
+    font-size: 14px;
 }
 
 .groups {
@@ -105,4 +125,13 @@ button {
 
 button:hover {
     background-color: #1976d2;
+}
+
+#postTitle {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
 }

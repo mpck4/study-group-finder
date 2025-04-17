@@ -9,21 +9,34 @@
 <body>
     <div class="container">
         <div class="sidebar">
-            <div class="profile-icon"></div>
-            <div class="icon home"></div>
+            <!-- Profile Icon -->
+            <img class="profile-icon" src="images/cawdai logo@2x.png" alt="Profile Icon">
+
+            <!-- Math Icon -->
+            <img class="icon math" src="images/MathButton.png" alt="Math Icon">
+
+            <!-- Science Icon -->
+            <img class="icon science" src="images/ScienseButton.png" alt="Science Icon">
+
+            <!-- Settings, Messages, Notifications -->
             <div class="icon settings"></div>
             <div class="icon messages"></div>
             <div class="icon notifications"></div>
+
+            <!-- Search Bar -->
             <div class="search">
-                <input type="text" placeholder="Search">
+                <input type="text" id="searchInput" placeholder="Search posts...">
             </div>
+
+            <!-- Groups Section -->
             <div class="groups">My Groups</div>
         </div>
         <div class="main-content">
             <div class="welcome">Welcome to Study Group Finder!</div>
             <h2>Create a Post</h2>
             <form id="postForm">
-                <textarea id="postContent" placeholder="Write your post here..."></textarea>
+                <input type="text" id="postTitle" placeholder="Enter post title..." required>
+                <textarea id="postContent" placeholder="Write your post here..." required></textarea>
                 <button type="submit">Submit</button>
             </form>
             <h2>Posts</h2>
@@ -33,23 +46,34 @@
     <script>
         document.getElementById('postForm').addEventListener('submit', function(event) {
             event.preventDefault();
+            const title = document.getElementById('postTitle').value;
             const content = document.getElementById('postContent').value;
             fetch('/api/posts', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ content }),
+                body: JSON.stringify({ title, content }),
             })
             .then(response => response.json())
             .then(post => {
+                document.getElementById('postTitle').value = '';
                 document.getElementById('postContent').value = '';
                 loadPosts();
             });
         });
 
-        function loadPosts() {
-            fetch('/api/posts')
+        document.getElementById('searchInput').addEventListener('input', function(event) {
+            const searchTerm = event.target.value;
+            loadPosts(searchTerm);
+        });
+
+        function loadPosts(searchTerm = '') {
+            const url = searchTerm 
+                ? `/api/posts?search=${encodeURIComponent(searchTerm)}`
+                : '/api/posts';
+                
+            fetch(url)
                 .then(response => response.json())
                 .then(posts => {
                     const postsDiv = document.getElementById('posts');
@@ -58,10 +82,10 @@
                         const postDiv = document.createElement('div');
                         postDiv.className = 'post';
                         postDiv.innerHTML = `
-                            <div class="title">Post #${post.id}</div>
+                            <div class="title">${post.title || ''}</div>
                             <div class="content">${post.content}</div>
                             <div class="replies">
-                                ${post.replies.map(reply => `<p>${reply.content}</p>`).join('')}
+                                ${post.replies ? post.replies.map(reply => `<p>${reply.content}</p>`).join('') : ''}
                             </div>
                             <div class="reply-box">
                                 <textarea placeholder="Write your reply..."></textarea>
@@ -85,10 +109,12 @@
             })
             .then(response => response.json())
             .then(reply => {
+                replyBox.value = '';
                 loadPosts();
             });
         }
 
+        // Load posts when the page loads
         loadPosts();
     </script>
 </body>
