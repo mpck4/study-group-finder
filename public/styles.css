@@ -3,7 +3,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-image: url('images/background.png'); /* Relative path to the image */
+    background-image: url('images/bg.png'); /* Relative path to the image */
     background-size: cover; /* Ensures the image covers the entire background */
     background-repeat: no-repeat; /* Prevents the image from repeating */
     background-position: center; /* Centers the image */
@@ -15,10 +15,11 @@ body {
 
 .sidebar {
     width: 200px;
-    background-image: url('images/aurora\ wallpaper1.png'); /* Relative path to the image */
-    background-size: cover; /* Ensures the image covers the entire background */
-    background-repeat: no-repeat; /* Prevents the image from repeating */
-    background-position: center; /* Centers the image */
+    background-color: #cfd8dc;
+    /*background-image: url('images/aurora\ wallpaper1.png'); /* Relative path to the image */
+    /*background-size: cover; /* Ensures the image covers the entire background */
+    /*background-repeat: no-repeat; /* Prevents the image from repeating */
+    /*background-position: center; /* Centers the image */
     padding: 20px;
     display: flex;
     flex-direction: column;
