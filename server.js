@@ -1,4 +1,6 @@
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";  // <-- disables TLS rejection of self-signed certificates
 require('dotenv').config();
+console.log('POSTGRES_URL:', process.env.POSTGRES_URL);
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');

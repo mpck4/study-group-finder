@@ -246,10 +246,13 @@
             })
             .then(response => response.json())
             .then(post => {
+                // Clear input fields after successful post creation
                 document.getElementById('postTitle').value = '';
                 document.getElementById('postContent').value = '';
+                // Reload posts from the database after creating a new one
                 loadPosts();
-            });
+            })
+            .catch(err => console.error(err));
         });
 
         function loadPosts(searchTerm = '') {
@@ -262,19 +265,24 @@
                 .then(posts => {
                     const postsDiv = document.getElementById('posts');
                     postsDiv.innerHTML = '';
-                    if (posts.length === 0) {
+                    if (!posts.length) {
                         postsDiv.innerHTML = '<p>No posts available.</p>';
                         return;
                     }
                     posts.forEach(post => {
                         const postDiv = document.createElement('div');
                         postDiv.className = 'post';
+                        // Create HTML for replies if available
+                        let repliesHTML = '';
+                        if (post.replies && post.replies.length > 0) {
+                            repliesHTML = `<div class="replies">
+                                ${post.replies.map(reply => `<p>${reply.content}</p>`).join('')}
+                            </div>`;
+                        }
                         postDiv.innerHTML = `
-                            <div class="title">${post.title || ''}</div>
+                            <div class="title">${post.title}</div>
                             <div class="content">${post.content}</div>
-                            <div class="replies">
-                                ${post.replies ? post.replies.map(reply => `<p>${reply.content}</p>`).join('') : ''}
-                            </div>
+                            ${repliesHTML}
                             <div class="reply-box">
                                 <textarea placeholder="Write your reply..."></textarea>
                                 <button onclick="submitReply(${post.id}, this)">Reply</button>
@@ -282,12 +290,14 @@
                         `;
                         postsDiv.appendChild(postDiv);
                     });
-                });
+                })
+                .catch(err => console.error(err));
         }
 
         function submitReply(postId, button) {
             const replyBox = button.previousElementSibling;
             const content = replyBox.value;
+            if (!content.trim()) return; // Prevent empty replies
             fetch(`/api/posts/${postId}/replies`, {
                 method: 'POST',
                 headers: {
@@ -299,7 +309,8 @@
             .then(reply => {
                 replyBox.value = '';
                 loadPosts();
-            });
+            })
+            .catch(err => console.error(err));
         }
 
         document.getElementById('searchInput').addEventListener('input', function(event) {
